@@ -1,0 +1,156 @@
+<application>
+  <component name="ProjectJdkTable">
+    <jdk version="2">
+      <name value="Java 1.8-65" />
+      <type value="JavaSDK" />
+      <version value="java version &quot;1.8.0_65&quot;" />
+      <homePath value="/usr/java/jdk1.8.0_65" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/lib/jdkAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/charsets.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/deploy.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/cldrdata.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/dnsns.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/jaccess.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/jfxrt.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/localedata.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/nashorn.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/sunec.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/sunjce_provider.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/sunpkcs11.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/ext/zipfs.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/javaws.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/jce.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/jfr.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/jfxswt.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/jsse.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/management-agent.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/plugin.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/resources.jar!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/jre/lib/rt.jar!/" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite" />
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/src.zip!/" />
+            <root type="simple" url="jar:///usr/java/jdk1.8.0_65/javafx-src.zip!/" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional />
+    </jdk>
+    <jdk version="2">
+      <name value="9-ea" />
+      <type value="JavaSDK" />
+      <version value="java version &quot;9-ea&quot;" />
+      <homePath value="/var/local/java/jdk1.9.103/jdk-9" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/lib/jdkAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jrt:///var/local/java/jdk1.9.103/jdk-9!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/ant-javafx.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/controlpanel.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/deploy.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/javafx-mx.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/javaws.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/jfxrt.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/jfxswt.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/packager.jar!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/lib/plugin.jar!/" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite" />
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/src.zip!/" />
+            <root type="simple" url="jar:///var/local/java/jdk1.9.103/jdk-9/javafx-src.zip!/" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional />
+    </jdk>
+    <jdk version="2">
+      <name value="Android API 23 Platform" />
+      <type value="Android SDK" />
+      <version value="java version &quot;1.8.0_65&quot;" />
+      <homePath value="$USER_HOME$/software/android-sdk-linux" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/plugins/android/lib/androidAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jar://$USER_HOME$/software/android-sdk-linux/platforms/android-23/android.jar!/" />
+            <root type="simple" url="file://$USER_HOME$/software/android-sdk-linux/platforms/android-23/data/res" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite">
+            <root type="simple" url="file://$USER_HOME$/software/android-sdk-linux/docs/reference" />
+          </root>
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="file://$USER_HOME$/software/android-sdk-linux/sources/android-23" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional jdk="Java 1.8-65" sdk="android-23" />
+    </jdk>
+    <jdk version="2">
+      <name value="9-ea (1)" />
+      <type value="JavaSDK" />
+      <version value="java version &quot;9-ea&quot;" />
+      <homePath value="$USER_HOME$/Téléchargements/jdk-9" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root type="simple" url="jar://$APPLICATION_HOME_DIR$/lib/jdkAnnotations.jar!/" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root type="simple" url="jrt:///home/damien/Téléchargements/jdk-9!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/ant-javafx.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/controlpanel.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/deploy.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/javafx-mx.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/javaws.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/jfxrt.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/jfxswt.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/packager.jar!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/lib/plugin.jar!/" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite" />
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/src.zip!/" />
+            <root type="simple" url="jar://$USER_HOME$/Téléchargements/jdk-9/javafx-src.zip!/" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional />
+    </jdk>
+  </component>
+</application>
