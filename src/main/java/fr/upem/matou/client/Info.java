@@ -1,0 +1,5 @@
+package fr.upem.matou.client;
+
+public enum Info {
+    ILLEGAL_SECURE_NUMBER, CLIENT_ACCEPT_FILE, TRANSFER_COMPLETED, CLIENT_REFUSE_FILE
+}
