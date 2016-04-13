@@ -43,6 +43,7 @@ public class PrivateConnection extends JFrame {
         sendFileButton.addActionListener(this::onListenerSendFile);
         setSize(620, 450);
         setTitle("Private chat");
+        setResizable(false);
     }
 
     public void newMessage(String message) {

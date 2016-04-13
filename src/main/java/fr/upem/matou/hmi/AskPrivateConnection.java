@@ -34,6 +34,7 @@ class AskPrivateConnection extends JDialog {
         pack();
         setSize(330, 150);
         setTitle("Pseudo do contact");
+        setResizable(false);
     }
 
     private void onAsk() {
