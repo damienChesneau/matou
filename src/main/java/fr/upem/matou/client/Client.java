@@ -99,8 +99,8 @@ public class Client implements AutoCloseable {
         ServerSocketChannel ss = initialize.getServerSocketChannel();
         InetSocketAddress address = (InetSocketAddress) ss.getLocalAddress();
         int port = address.getPort();
-        InetAddress inetAddress = address.getAddress();
-        ByteBuffer bb = Querys.encodeResponseToServerPrivateConnAccepted(inetAddress, pseudo, port, secureNumber);
+        byte[] address1 = InetAddress.getLocalHost().getAddress();
+        ByteBuffer bb = Querys.encodeResponseToServerPrivateConnAccepted(address1, pseudo, port, secureNumber);
         bb.flip();
         sc.write(bb);
         return initialize;

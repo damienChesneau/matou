@@ -145,14 +145,13 @@ public class Querys {
         return bb;
     }
 
-    public static ByteBuffer encodeResponseToServerPrivateConnAccepted(InetAddress address, String pseudo, int port, long secureNumber) {
-        byte[] addressAsByteArray = address.getAddress();
+    public static ByteBuffer encodeResponseToServerPrivateConnAccepted(byte[] address, String pseudo, int port, long secureNumber) {
         ByteBuffer encodedPseudo = UTF8.encode(pseudo);
-        ByteBuffer bb = ByteBuffer.allocate(Byte.BYTES * 3 + addressAsByteArray.length + Integer.BYTES + Long.BYTES + Short.BYTES + encodedPseudo.remaining());
+        ByteBuffer bb = ByteBuffer.allocate(Byte.BYTES * 3 + address.length + Integer.BYTES + Long.BYTES + Short.BYTES + encodedPseudo.remaining());
         bb.put(Query.RESP_SRV_PRIVATE_CON.getOperationCode());
         bb.put(Byte.MAX_VALUE);
-        bb.put((byte) addressAsByteArray.length);
-        bb.put(addressAsByteArray);
+        bb.put((byte) address.length);
+        bb.put(address);
         bb.putInt(port);
         bb.putLong(secureNumber);
         bb.putShort((short) encodedPseudo.remaining());
