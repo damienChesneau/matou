@@ -33,9 +33,11 @@ class ConnectServer extends JDialog {
             }
         });
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        pack();
+
         this.host.setText("localhost");
         this.serverPort.setText("7777");
+        pack();
+        setSize(300, 170);
     }
 
     public void open() {
@@ -51,7 +53,7 @@ class ConnectServer extends JDialog {
         String text = serverPort.getText();
         try {
             return Integer.parseInt(text);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             JOptionPane.showInputDialog(this, "Set the port as an int.", "Init server", JOptionPane.QUESTION_MESSAGE);
             return ensureInt();
         }
