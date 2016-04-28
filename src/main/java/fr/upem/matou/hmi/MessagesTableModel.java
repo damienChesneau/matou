@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 /**
+ * This class is the model used for the JTable panel.
  * @author Damien Chesneau
  */
 class MessagesTableModel extends AbstractTableModel {
@@ -23,7 +24,7 @@ class MessagesTableModel extends AbstractTableModel {
     }
 
     @Override
-    public Class getColumnClass(int col) {
+    public Class<?> getColumnClass(int col) {
         return String.class;
     }
 
@@ -49,6 +50,10 @@ class MessagesTableModel extends AbstractTableModel {
         return false;
     }
 
+    /**
+     * Add a new incomming message.
+     * @param message
+     */
     public void newMessage(Message message) {
         messages.add(message);
         fireTableDataChanged();

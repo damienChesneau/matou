@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * Reader for an incoming private connection request.
  * @author Damien Chesneau
  */
 public class AskPrivateConnReader implements RequestReader<Optional<String>> {
@@ -27,7 +28,7 @@ public class AskPrivateConnReader implements RequestReader<Optional<String>> {
     }
 
     @Override
-    public RequestReader process() {
+    public RequestReader<?> process() {
         State process = reader.process();
         if (reader.isFinish() && reader instanceof ShortReader) {
             ShortReader sr = (ShortReader) reader;

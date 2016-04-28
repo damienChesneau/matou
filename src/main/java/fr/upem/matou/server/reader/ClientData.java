@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 
 /**
+ * Manage all clients requests and messages to send.
+ *
  * @author Damien Chesneau
  */
 public class ClientData {
@@ -39,7 +41,12 @@ public class ClientData {
     public void doRead(SelectionKey key) throws IOException {
         selectionKey = key;
         int read = socketChannel.read(in);//TODO check read;
-        RequestReader process = requestReader.process();
+        if (read == -1) {
+            closed = true;
+            key.interestOps(SelectionKey.OP_WRITE);
+            return;
+        }
+        RequestReader<?> process = requestReader.process();
         if (requestReader.isFinish() && requestReader instanceof ConnectServerReader) {
             Optional<String> value = ((ConnectServerReader) requestReader).value();
             pseudo = value.orElseThrow(AssertionError::new);
@@ -65,7 +72,12 @@ public class ClientData {
         if (out.limit() > 0) {
             out = simpleWrite(out);
         } else if (messagesToSend.isEmpty()) {
-            selectionKey.interestOps(SelectionKey.OP_READ);
+            if (closed) {
+                selectionKey.cancel();
+                server.disconnetClient(pseudo, this);
+            } else {
+                selectionKey.interestOps(SelectionKey.OP_READ);
+            }
         } else {
             ByteBuffer bb = messagesToSend.poll();
             out = simpleWrite(bb);

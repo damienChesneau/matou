@@ -2,7 +2,6 @@ package fr.upem.matou.common;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
@@ -10,7 +9,10 @@ import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 
+import static fr.upem.matou.common.SyncronousReader.*;
+
 /**
+ *
  * @author Damien Chesneau
  */
 public class Querys {
@@ -29,6 +31,15 @@ public class Querys {
         bb.flip();
         try {
             return bb.get();
+        } finally {
+            bb.compact();
+        }
+    }
+
+    public static byte decodeOperationCodeSynchronous(SocketChannel sc, ByteBuffer bb) throws IOException {
+        bb.flip();
+        try {
+            return readFullyByte(sc, bb);
         } finally {
             bb.compact();
         }
@@ -88,23 +99,12 @@ public class Querys {
         return new Message(login, message);
     }
 
-    public static Message decodeBroadcastMessage(SocketChannel sc) throws IOException {
-        ByteBuffer bb = ByteBuffer.allocate(Short.BYTES);
-        sc.read(bb);
+    public static Message decodeBroadcastMessage(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        short lenOfLogin = bb.getShort();
-        bb = ByteBuffer.allocate(lenOfLogin);
-        sc.read(bb);
-        bb.flip();
-        String login = decodeString(bb, lenOfLogin);
-        bb = ByteBuffer.allocate(Integer.BYTES);
-        sc.read(bb);
-        bb.flip();
-        int lenOfMessage = bb.getInt();
-        bb = ByteBuffer.allocate(lenOfMessage);
-        sc.read(bb);
-        bb.flip();
-        String message = decodeString(bb, lenOfMessage);
+        short lenOfLogin = readFullyShort(sc, bb);
+        String login = decodeSyncronousString(sc, bb, lenOfLogin);
+        int lenOfMessage = readFullyInteger(sc, bb);
+        String message = decodeSyncronousString(sc, bb, lenOfMessage);
         return new Message(login, message);
     }
 
@@ -126,15 +126,10 @@ public class Querys {
         return bb;
     }
 
-    public static String decodeAskPrivateConnectionRelayToTarget(SocketChannel sc) throws IOException {
-        ByteBuffer bb = ByteBuffer.allocate(Short.BYTES);
-        sc.read(bb);
+    public static String decodeAskPrivateConnectionRelayToTarget(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        short lenLogin = bb.getShort();
-        bb = ByteBuffer.allocate(lenLogin);
-        sc.read(bb);
-        bb.flip();
-        return decodeString(bb, lenLogin);
+        short lenLogin = readFullyShort(sc, bb);
+        return decodeSyncronousString(sc, bb, lenLogin);
     }
 
 
@@ -173,20 +168,20 @@ public class Querys {
         return bb;
     }
 
-    public static PrivateConnResponse decodeRelayResponseToServerPrivateConnAccepted(ByteBuffer bb) throws UnknownHostException {
+    public static PrivateConnResponse decodeRelayResponseToServerPrivateConnAccepted(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        if (!(bb.get() == Byte.MAX_VALUE)) {
+        if (!(readFullyByte(sc, bb) == Byte.MAX_VALUE)) {
             return new PrivateConnResponse();
         }
-        byte lenOfIp = bb.get();
+        byte lenOfIp = readFullyByte(sc, bb);
         byte[] ipAddress = new byte[lenOfIp];
         for (int i = 0; i < lenOfIp; i++) {
-            ipAddress[i] = bb.get();
+            ipAddress[i] = readFullyByte(sc, bb);
         }
-        int port = bb.getInt();
-        long secureNumber = bb.getLong();
-        short lenOfPseudo = bb.getShort();
-        String pseudo = decodeString(bb, lenOfPseudo);
+        int port = readFullyInteger(sc, bb);
+        long secureNumber = readFullyLong(sc, bb);
+        short lenOfPseudo = readFullyShort(sc, bb);
+        String pseudo = decodeSyncronousString(sc, bb, lenOfPseudo);
         return new PrivateConnResponse(pseudo, InetAddress.getByAddress(ipAddress), port, secureNumber);
     }
 
@@ -249,9 +244,9 @@ public class Querys {
         return bb;
     }
 
-    public static boolean isDirectMessageAccepted(ByteBuffer bb) {
+    public static boolean isDirectMessageAccepted(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        byte value = bb.get();
+        byte value = readFullyByte(sc, bb);
         byte expected = Query.ACCEPT_CLIENT.getOperationCode();
         return value == expected;
     }
@@ -265,16 +260,25 @@ public class Querys {
         return bb;
     }
 
-    public static String decodeMessageDirectClient(ByteBuffer bb) {
+    public static String decodeMessageDirectClient(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        int sizeMessage = bb.getInt();
-        return decodeString(bb, sizeMessage);
+        int sizeMessage = readFullyInteger(sc, bb);
+        return decodeSyncronousString(sc, bb, sizeMessage);
     }
 
-    public static long decodeFirstConnectionRequest(ByteBuffer bb) {
+    public static long decodeFirstConnectionRequest(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        bb.get();
-        return bb.getLong();
+        readFullyByte(sc, bb);
+        return readFullyLong(sc, bb);
+    }
+
+    private static String decodeSyncronousString(SocketChannel sc, ByteBuffer bb, int size) throws IOException {
+        ByteBuffer loginBb = ByteBuffer.allocate(size);
+        for (int i = 0; i < size; i++) {
+            loginBb.put(readFullyByte(sc, bb));
+        }
+        loginBb.flip();
+        return UTF8.decode(loginBb).toString();
     }
 
     private static String decodeString(ByteBuffer bb, int size) {
@@ -295,10 +299,10 @@ public class Querys {
         return bb;
     }
 
-    public static String decodeFileRequest(ByteBuffer bb) {
+    public static String decodeFileRequest(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        short size = bb.getShort();
-        return decodeString(bb, size);
+        short size = readFullyShort(sc, bb);
+        return decodeSyncronousString(sc, bb, size);
     }
 
     public static ByteBuffer encodeRefuseFileRequestResponse() {
@@ -317,14 +321,14 @@ public class Querys {
         return bb;
     }
 
-    public static ResponseFileTransfer decodeFileRequestResponse(ByteBuffer bb) {
+    public static ResponseFileTransfer decodeFileRequestResponse(SocketChannel sc, ByteBuffer bb) throws IOException {
         bb.flip();
-        byte b = bb.get();
+        byte b = readFullyByte(sc, bb);
         if (b == Byte.MIN_VALUE) {
             return new ResponseFileTransfer();
         }
-        int port = bb.getInt();
-        long secureCode = bb.getLong();
+        int port = readFullyInteger(sc, bb);
+        long secureCode = readFullyLong(sc, bb);
         return new ResponseFileTransfer(port, secureCode);
     }
 
@@ -366,16 +370,14 @@ public class Querys {
         return bb;
     }
 
-    public static FileTransfer decodeFileTransfer(SocketChannel client) throws IOException {
-        ByteBuffer bb = ByteBuffer.allocate(Long.BYTES * 2);
-        client.read(bb);
+    public static FileTransfer decodeFileTransfer(SocketChannel client, ByteBuffer bb) throws IOException {
         bb.flip();
-        long secureNumber = bb.getLong();
-        long size = bb.getLong();
+        long secureNumber = readFullyLong(client, bb);
+        long size = readFullyLong(client, bb);
         ByteBuffer bbData = ByteBuffer.allocate((int) size);
         client.read(bbData);
         bbData.flip();
-        byte[] array = bbData.array();
+        byte[] array = readFullyByteArray(client, bbData, size);
         return new FileTransfer(array, secureNumber);
     }
 

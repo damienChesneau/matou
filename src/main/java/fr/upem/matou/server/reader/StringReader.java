@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.Optional;
 
 /**
+ * Reader for just a String.
  * @author Damien Chesneau
  */
 public class StringReader extends Reader<Optional<String>> {

@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Optional;
 
 /**
+ * Reader for just a byte.
  * @author Damien Chesneau
  */
 public class ByteReader extends Reader<Optional<Byte>> {

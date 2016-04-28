@@ -1,0 +1,29 @@
+<project name="matou" default="all" >
+    <target name="all" depends=" compile, jar, javadoc"/>
+
+    <target name="clean">
+        <delete dir="classes/fr/" quiet="true"/>
+        <delete dir="docs/api" quiet="true"/>
+        <delete file="matou.jar" quiet="true"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="classes"/>
+        <javac srcdir="src/main" destdir="classes">
+        </javac>
+    </target>
+    <target name="jar">
+        <jar destfile="matou.jar" basedir="classes">
+            <manifest>
+                <attribute name="Main-Class" value="fr.upem.matou.Main"/>
+            </manifest>
+        </jar>
+    </target>
+    <target name="javadoc" depends="compile">
+        <javadoc packagenames="src" sourcepath="src" destdir="docs/api">
+            <fileset dir="src/main/java">
+                <include name="**/*.java"/>
+            </fileset>
+        </javadoc>
+    </target>
+</project>

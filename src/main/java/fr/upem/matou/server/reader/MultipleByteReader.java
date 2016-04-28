@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Reader for an byte array.
  * @author Damien Chesneau
  */
 public class MultipleByteReader extends Reader<Optional<List<Byte>>> {

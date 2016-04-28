@@ -3,6 +3,7 @@ package fr.upem.matou.client;
 import java.io.IOException;
 
 /**
+ * Allows to throw an exception with a consumer.
  * @author Damien Chesneau
  */
 @FunctionalInterface

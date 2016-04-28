@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.OptionalInt;
 
 /**
+ * Reader for just a int.
  * @author Damien Chesneau
  */
 public class IntReader extends Reader<OptionalInt> {

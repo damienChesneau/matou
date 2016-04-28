@@ -18,10 +18,18 @@ import java.util.function.Consumer;
  * @author Damien Chesneau
  */
 public class Client implements AutoCloseable {
+
     private final String pseudo;
     private final InetSocketAddress server;
     private final SocketChannel sc;
 
+    /**
+     * Create a new instance of a client.
+     * @param pseudo
+     * @param server adress of the server
+     * @return the client instance
+     * @throws IOException
+     */
     public static Client newInstance(String pseudo, InetSocketAddress server) throws IOException {
         SocketChannel sc = SocketChannel.open();
         return new Client(pseudo, server, sc);
@@ -33,7 +41,14 @@ public class Client implements AutoCloseable {
         this.pseudo = Objects.requireNonNull(pseudo);
     }
 
-
+    /**
+     * Connect to the target server.
+     * @param messages A consumer of received messages.
+     * @param privateConnectionAsked A consumer of new private connection asks.
+     * @param acceptedPrivateConn A consumer of your accepted private connection.
+     * @return
+     * @throws IOException
+     */
     public boolean connect(Consumer<Message> messages, Consumer<String> privateConnectionAsked, Consumer<PrivateConnectionChat> acceptedPrivateConn) throws IOException {
         Objects.requireNonNull(messages);
         Objects.requireNonNull(privateConnectionAsked);
@@ -43,34 +58,9 @@ public class Client implements AutoCloseable {
         sc.write(byteBuffer);
         ByteBuffer bb = ByteBuffer.allocate(Byte.BYTES);
         sc.read(bb);
-        byte b = Querys.decodeOperationCode(bb);
+        byte b = Querys.decodeOperationCodeSynchronous(sc, bb);
         if (b == Query.VALIDATE_CONNECTION.getOperationCode()) {
-            new Thread(() -> {
-                ByteBuffer bba = ByteBuffer.allocate(Byte.BYTES);
-                try {
-                    while (sc.read(bba) != -1) {
-                        byte b1 = Querys.decodeOperationCode(bba);
-                        if (b1 == Query.BROADCAST_CLIENTS_MESSAGE.getOperationCode()) {
-                            Message mess = Querys.decodeBroadcastMessage(sc);
-                            messages.accept(mess);
-                        } else if (b1 == Query.ASK_SRV_PRIVATE_CON_RELAY_TARGET.getOperationCode()) {
-                            String pseudoWishPrivateConn = Querys.decodeAskPrivateConnectionRelayToTarget(sc);
-                            privateConnectionAsked.accept(pseudoWishPrivateConn);
-                        } else if (b1 == Query.RESP_SRC_PRIVATE_CON_RELAY_CLIENT.getOperationCode()) {
-                            ByteBuffer allocate = ByteBuffer.allocate(1024);
-                            sc.read(allocate);//TODO reformat.
-                            Querys.PrivateConnResponse privateConnResponse = Querys.decodeRelayResponseToServerPrivateConnAccepted(allocate);
-                            PrivateConnectionChat privateConnectionSource = PrivateConnectionChat.newSource(privateConnResponse);
-                            acceptedPrivateConn.accept(privateConnectionSource);
-                        } else {
-                            System.out.println("Incoming unknown request b=" + b1);
-                            bba.clear();
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+            new Thread(new ClientRequestReader(messages, privateConnectionAsked, acceptedPrivateConn, sc)).start();
             return true;
         } else if (b == Query.ERROR_CONNECTION.getOperationCode()) {
             return false;
@@ -78,6 +68,11 @@ public class Client implements AutoCloseable {
         return false;
     }
 
+    /**
+     * Send a message in broadcast mode.
+     * @param message The string message
+     * @throws IOException
+     */
     public void sendMessage(String message) throws IOException {
         Objects.requireNonNull(message);
         ByteBuffer bb = Querys.encodeSendMessageToServer(message);
@@ -85,6 +80,11 @@ public class Client implements AutoCloseable {
         sc.write(bb);
     }
 
+    /**
+     * Ask an other user of the chat to have a private connection.
+     * @param login the target
+     * @throws IOException
+     */
     public void askPrivateConnection(String login) throws IOException {
         Objects.requireNonNull(login);
         ByteBuffer bb = Querys.encodeAskPrivateConnection(login);
@@ -92,7 +92,12 @@ public class Client implements AutoCloseable {
         sc.write(bb);
     }
 
-
+    /**
+     * Validate the requested private connection.
+     * @param pseudo of the target.
+     * @return an privateConnectionChat instance
+     * @throws IOException
+     */
     public PrivateConnectionChat validatePrivateConnectionWith(String pseudo) throws IOException {
         long secureNumber = new SecureRandom().nextLong();
         PrivateConnectionChat initialize = PrivateConnectionChat.newTarget(secureNumber, pseudo);
@@ -106,12 +111,20 @@ public class Client implements AutoCloseable {
         return initialize;
     }
 
+    /**
+     * Refuse a private connection.
+     * @throws IOException
+     */
     public void refusePrivateConnectionWith() throws IOException {
         ByteBuffer bb = Querys.encodeResponseToServerPrivateConnRefused();
         bb.flip();
         sc.write(bb);
     }
 
+    /**
+     * Close the chat.
+     * @throws IOException
+     */
     @Override
     public void close() throws IOException {
         sc.close();

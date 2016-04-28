@@ -8,6 +8,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * Reader for the operation code.
+ * This class call other reader according to the value of the operation code.
+ *
  * @author Damien Chesneau
  */
 public class OperationCodeReader implements RequestReader<Optional<Byte>> {
@@ -29,7 +32,7 @@ public class OperationCodeReader implements RequestReader<Optional<Byte>> {
     }
 
     @Override
-    public RequestReader process() {
+    public RequestReader<?> process() {
         State processState = byteReader.process();
         if (State.FINISH.equals(processState)) {
             Optional<Byte> opValue = byteReader.value();

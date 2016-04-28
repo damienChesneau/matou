@@ -4,6 +4,8 @@ import java.nio.ByteBuffer;
 import java.util.OptionalLong;
 
 /**
+ * Reader for just a long.
+ *
  * @author Damien Chesneau
  */
 public class LongReader extends Reader<OptionalLong> {

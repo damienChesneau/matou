@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * Response of an target to an client when a private connection are requested.
  * @author Damien Chesneau
  */
 public class ResponsePrivateConnReader implements RequestReader<Optional<String>> {
@@ -22,7 +23,6 @@ public class ResponsePrivateConnReader implements RequestReader<Optional<String>
     public ResponsePrivateConnReader(SocketChannel sc, ByteBuffer bb, ClientData clientData) {
         Objects.requireNonNull(sc);
         Objects.requireNonNull(bb);
-
         this.clientData = Objects.requireNonNull(clientData);
         reader = new ByteReader(bb);
         this.sc = sc;
@@ -36,7 +36,7 @@ public class ResponsePrivateConnReader implements RequestReader<Optional<String>
     private long secureNumber;
 
     @Override
-    public RequestReader process() {
+    public RequestReader<?> process() {
         State process = reader.process();
         if (reader.isFinish() && reader instanceof ByteReader) {
             ByteReader sr = (ByteReader) reader;

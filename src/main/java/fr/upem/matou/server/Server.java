@@ -1,5 +1,6 @@
 package fr.upem.matou.server;
 
+import fr.upem.matou.client.Client;
 import fr.upem.matou.server.reader.ClientData;
 
 import java.io.Closeable;
@@ -12,6 +13,8 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 
 /**
+ * Manage server with asynchronous API.
+ *
  * @author Damien Chesneau
  */
 public class Server implements Closeable {
@@ -37,6 +40,11 @@ public class Server implements Closeable {
         this.selectedKeys = selector.selectedKeys();
     }
 
+    /**
+     * Start the server.
+     *
+     * @throws IOException
+     */
     public void launch() throws IOException {
         serverSocketChannel.configureBlocking(false);
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
@@ -106,8 +114,18 @@ public class Server implements Closeable {
         return clients.values();
     }
 
+    /**
+     * get all clients using the server.
+     *
+     * @return map
+     */
     public Map<String, ClientData> getClients() {
         return clients;
+    }
+
+    public void disconnetClient(String pseudo, ClientData value) {
+        boolean remove = clients.remove(pseudo, value);
+        System.out.println(remove);
     }
 
     @Override

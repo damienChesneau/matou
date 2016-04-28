@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
+ * Reader for an incoming first connection.
+ *
  * @author Damien Chesneau
  */
 public class ConnectServerReader implements RequestReader<Optional<String>> {
@@ -21,20 +23,20 @@ public class ConnectServerReader implements RequestReader<Optional<String>> {
         this.clientData = Objects.requireNonNull(clientData);
         Objects.requireNonNull(sc);
         Objects.requireNonNull(bb);
-        reader = new ShortReader( bb);
+        reader = new ShortReader(bb);
         this.sc = sc;
         this.bb = bb;
     }
 
     @Override
-    public RequestReader process() {
+    public RequestReader<?> process() {
         State process = reader.process();
         if (State.FINISH.equals(process) && reader instanceof ShortReader) {
             ShortReader sr = (ShortReader) reader;
             Optional<Short> value = sr.value();
             if (value.isPresent()) {
                 short lenOfLogin = value.get();
-                reader = new StringReader( bb, lenOfLogin);
+                reader = new StringReader(bb, lenOfLogin);
             }
         } else if (State.FINISH.equals(process) && reader instanceof StringReader) {
             value = ((StringReader) reader).value().orElseThrow(AssertionError::new);

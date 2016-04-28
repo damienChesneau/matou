@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Optional;
 
 /**
+ * Reader for just a short.
  * @author Damien Chesneau
  */
 public class ShortReader extends Reader<Optional<Short>> {

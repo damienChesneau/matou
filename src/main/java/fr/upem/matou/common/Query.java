@@ -1,6 +1,7 @@
 package fr.upem.matou.common;
 
 /**
+ * Enum with all operation codes.
  * @author Damien Chesneau
  */
 public enum Query {

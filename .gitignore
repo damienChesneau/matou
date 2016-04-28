@@ -1,7 +1,7 @@
-*.class
 *.jar
 hs_err_pid*
 *.iml
 .idea/
 target/
 /out/
+.docs/

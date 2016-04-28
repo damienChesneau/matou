@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
+ * Abstract readers. All type reader extends this class.
  * @author Damien Chesneau
  */
 abstract class Reader<T> {

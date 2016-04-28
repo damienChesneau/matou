@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 /**
+ * Represent the broadcast message.
+ *
  * @author Damien Chesneau
  */
 public class SendSrvMessageReader implements RequestReader<Optional<String>> {
@@ -30,7 +32,7 @@ public class SendSrvMessageReader implements RequestReader<Optional<String>> {
     }
 
     @Override
-    public RequestReader process() {
+    public RequestReader<?> process() {
         State process = reader.process();
         if (reader.isFinish() && reader instanceof IntReader) {
             IntReader sr = (IntReader) reader;
